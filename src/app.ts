@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import notFound from "./middlewares/404.middleware";
 import indexRouter from "./routes";
 import authRouter from "./routes/auth.route";
+import categoryRouter from "./routes/category.route";
 
 dotenv.config();
 
@@ -13,6 +14,7 @@ app.use(express.json());
 
 app.use(indexRouter);
 app.use(authRouter);
+app.use(categoryRouter);
 
 app.use(notFound);
 

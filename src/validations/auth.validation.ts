@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { body, checkSchema, Meta, validationResult } from "express-validator";
+import { body, Meta, validationResult } from "express-validator";
 import { formatter } from "../helpers/validation";
 import { PrismaClient } from "@prisma/client";
 import { compare } from "../helpers/hash";
