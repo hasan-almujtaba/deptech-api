@@ -6,7 +6,7 @@ CREATE TABLE `Product` (
     `image` VARCHAR(191) NOT NULL,
     `categoryId` INTEGER NOT NULL,
 
-    UNIQUE INDEX `Product_categoryId_key`(`categoryId`),
+    INDEX `Product_categoryId_key`(`categoryId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 

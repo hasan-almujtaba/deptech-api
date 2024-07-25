@@ -22,7 +22,7 @@ const productExist = async (value: number) => {
 const categoryExist = async (value: number) => {
   const category = await prisma.category.findUnique({
     where: {
-      id: value,
+      id: Number(value),
     },
   });
 
@@ -44,11 +44,6 @@ export const storeProductValidation = [
     .withMessage("Please enter description")
     .isString()
     .withMessage("Data must be a string"),
-  // body("image")
-  //   .notEmpty()
-  //   .withMessage("Please enter description")
-  //   .isString()
-  //   .withMessage("Data must be a string"),
   body("categoryId")
     .notEmpty()
     .withMessage("Please select category")
@@ -86,6 +81,16 @@ export const updateProductValidation = [
     .notEmpty()
     .withMessage("Please enter description")
     .isString()
+    .withMessage("Data must be a string"),
+  body("categoryId")
+    .notEmpty()
+    .withMessage("Please select category")
+    .isNumeric()
+    .withMessage("Data must be a string"),
+  body("stock")
+    .notEmpty()
+    .withMessage("Please enter stock")
+    .isNumeric()
     .withMessage("Data must be a string"),
   function (req: Request, res: Response, next: NextFunction) {
     var errors = validationResult(req).formatWith(formatter);
