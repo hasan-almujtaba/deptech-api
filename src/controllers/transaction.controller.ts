@@ -4,13 +4,13 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient({});
 
 export const index = async (req: Request, res: Response) => {
-  const products = await prisma.product.findMany();
+  const transaction = await prisma.transaction.findMany();
 
-  res.json({ message: "Success", data: products });
+  res.json({ message: "Success", data: transaction });
 };
 
 export const show = async (req: Request, res: Response) => {
-  const product = await prisma.product.findUnique({
+  const product = await prisma.transaction.findUnique({
     where: {
       id: Number(req.params.id),
     },
@@ -20,30 +20,24 @@ export const show = async (req: Request, res: Response) => {
 };
 
 export const store = async (req: Request, res: Response) => {
-  const product = await prisma.product.create({
+  const transaction = await prisma.transaction.create({
     data: {
-      name: req.body.name,
-      description: req.body.description,
-      image: req.file as any,
-      Category: {
-        connect: {
-          id: req.body.categoryId,
-        },
-      },
+      type: req.body.type,
+      stock: +req.body.stock,
     },
   });
 
-  res.json({ message: "Success", data: product });
+  res.json({ message: "Success", data: transaction });
 };
 
 export const update = async (req: Request, res: Response) => {
-  await prisma.product.update({
+  await prisma.transaction.update({
     where: {
-      id: req.body.id,
+      id: Number(req.body.id),
     },
     data: {
-      name: req.body.name,
-      description: req.body.description,
+      type: req.body.type,
+      stock: Number(req.body.stock),
     },
   });
 
@@ -54,8 +48,7 @@ export const destroy = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    // Check if the product exists
-    const product = await prisma.product.findUnique({
+    const product = await prisma.transaction.findUnique({
       where: { id: Number(id) },
     });
 
@@ -63,12 +56,11 @@ export const destroy = async (req: Request, res: Response) => {
       return res.status(404).json({ error: "Product not found" });
     }
 
-    // If the product exists, proceed to delete it
-    await prisma.product.delete({
+    await prisma.transaction.delete({
       where: { id: Number(id) },
     });
 
-    return res.status(200).json({ message: "Product deleted successfully" });
+    return res.status(200).json({ message: "Success" });
   } catch (error) {
     return res
       .status(500)

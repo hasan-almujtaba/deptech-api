@@ -12,7 +12,7 @@ export const index = async (req: Request, res: Response) => {
 export const show = async (req: Request, res: Response) => {
   const category = await prisma.category.findUnique({
     where: {
-      id: Number(req.params.id),
+      id: Number(req.params.id ?? 0),
     },
   });
 

@@ -5,6 +5,7 @@ import indexRouter from "./routes";
 import authRouter from "./routes/auth.route";
 import categoryRouter from "./routes/category.route";
 import productRouter from "./routes/product.route";
+import transactionRouter from "./routes/transaction.route";
 
 dotenv.config();
 
@@ -17,6 +18,7 @@ app.use(indexRouter);
 app.use(authRouter);
 app.use(categoryRouter);
 app.use(productRouter);
+app.use(transactionRouter);
 
 app.use(notFound);
 
