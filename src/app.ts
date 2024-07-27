@@ -6,11 +6,19 @@ import authRouter from "./routes/auth.route";
 import categoryRouter from "./routes/category.route";
 import productRouter from "./routes/product.route";
 import transactionRouter from "./routes/transaction.route";
+import cors from "cors";
 
 dotenv.config();
 
 const app: Express = express();
 const port = process.env.PORT || 3000;
+
+const corsOptions = {
+  origin: "http://localhost:3000",
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
 
 app.use(express.json());
 

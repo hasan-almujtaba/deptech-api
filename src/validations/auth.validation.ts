@@ -122,11 +122,6 @@ export const updateProfileValidation = [
     .isEmail()
     .withMessage("Data must be an email")
     .custom(emailUnique),
-  body("password")
-    .notEmpty()
-    .withMessage("Please enter password")
-    .isString()
-    .withMessage("Data must be a string"),
   body("gender")
     .notEmpty()
     .withMessage("Please enter gender")

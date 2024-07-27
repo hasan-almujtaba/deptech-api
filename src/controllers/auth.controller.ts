@@ -59,7 +59,6 @@ export const updateProfile = async (req: Request, res: Response) => {
       dateOfBirth: req.body.dateOfBirth,
       email: req.body.email,
       gender: req.body.gender,
-      password: hash(req.body.password),
     },
   });
 
@@ -78,6 +77,6 @@ export const getUser = async (req: RequestWithUser, res: Response) => {
 
   res.json({
     message: "Success",
-    user,
+    data: user,
   });
 };

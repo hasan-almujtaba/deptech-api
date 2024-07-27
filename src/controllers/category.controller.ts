@@ -3,53 +3,116 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient({});
 
-export const index = async (req: Request, res: Response) => {
-  const categories = await prisma.category.findMany();
-
-  res.json({ message: "Success", data: categories });
+export const index = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const categories = await prisma.category.findMany({
+      orderBy: {
+        id: "desc",
+      },
+    });
+    return res.json({ message: "Success", data: categories });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Error retrieving categories", error });
+  }
 };
 
-export const show = async (req: Request, res: Response) => {
-  const category = await prisma.category.findUnique({
-    where: {
-      id: Number(req.params.id ?? 0),
-    },
-  });
+export const show = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const id = Number(req.params.id);
+    if (isNaN(id)) {
+      return res.status(400).json({ message: "Invalid category ID" });
+    }
 
-  res.json({ message: "Success", data: category });
+    const category = await prisma.category.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!category) {
+      return res.status(404).json({ message: "Category not found" });
+    }
+
+    return res.json({ message: "Success", data: category });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Error retrieving category", error });
+  }
 };
 
-export const store = async (req: Request, res: Response) => {
-  const categories = await prisma.category.create({
-    data: {
-      name: req.body.name,
-      description: req.body.description,
-    },
-  });
+export const store = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const { name, description } = req.body;
 
-  res.json({ message: "Success", data: categories });
+    if (!name || !description) {
+      return res
+        .status(400)
+        .json({ message: "Name and description are required" });
+    }
+
+    const category = await prisma.category.create({
+      data: {
+        name,
+        description,
+      },
+    });
+
+    return res.json({ message: "Success", data: category });
+  } catch (error) {
+    return res.status(500).json({ message: "Error creating category", error });
+  }
 };
 
-export const update = async (req: Request, res: Response) => {
-  await prisma.category.update({
-    where: {
-      id: req.body.id,
-    },
-    data: {
-      name: req.body.name,
-      description: req.body.description,
-    },
-  });
+export const update = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    const { id, name, description } = req.body;
 
-  res.json({ message: "Success" });
+    if (!id || !name || !description) {
+      return res
+        .status(400)
+        .json({ message: "ID, name, and description are required" });
+    }
+
+    const category = await prisma.category.update({
+      where: {
+        id: Number(id),
+      },
+      data: {
+        name,
+        description,
+      },
+    });
+
+    return res.json({ message: "Success", data: category });
+  } catch (error) {
+    return res.status(500).json({ message: "Error updating category", error });
+  }
 };
 
-export const destroy = async (req: Request, res: Response) => {
-  await prisma.category.delete({
-    where: {
-      id: Number(req.params.id),
-    },
-  });
+export const destroy = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    const id = Number(req.params.id);
+    if (isNaN(id)) {
+      return res.status(400).json({ message: "Invalid category ID" });
+    }
 
-  return res.json({ message: "Success" });
+    await prisma.category.delete({
+      where: {
+        id,
+      },
+    });
+
+    return res.json({ message: "Success" });
+  } catch (error) {
+    return res.status(500).json({ message: "Error deleting category", error });
+  }
 };
