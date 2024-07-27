@@ -32,7 +32,7 @@ export const show = async (req: Request, res: Response): Promise<Response> => {
     });
 
     if (!category) {
-      return res.status(404).json({ message: "Category not found" });
+      return res.status(404).json({ message: "Category not foundaaaa" });
     }
 
     return res.json({ message: "Success", data: category });
@@ -46,12 +46,6 @@ export const show = async (req: Request, res: Response): Promise<Response> => {
 export const store = async (req: Request, res: Response): Promise<Response> => {
   try {
     const { name, description } = req.body;
-
-    if (!name || !description) {
-      return res
-        .status(400)
-        .json({ message: "Name and description are required" });
-    }
 
     const category = await prisma.category.create({
       data: {

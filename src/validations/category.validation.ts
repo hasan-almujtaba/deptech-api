@@ -35,18 +35,15 @@ const categoryExist = async (value: number) => {
   });
 
   if (!category) {
-    return Promise.reject("Category not found");
+    return Promise.reject("Category not foundjjjj");
   }
 
   return true;
 };
 
 export const updateCategoryValidation = [
-  body("id")
-    .notEmpty()
-    .withMessage("Please enter id")
-    .isNumeric()
-    .custom(categoryExist),
+  body("id").notEmpty().withMessage("Please enter id").isNumeric(),
+  // .custom(categoryExist),
   body("name")
     .notEmpty()
     .withMessage("Please enter name")

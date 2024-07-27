@@ -35,7 +35,7 @@ const categoryExist = async (value: number) => {
   });
 
   if (!category) {
-    return Promise.reject("Category not found");
+    return Promise.reject("Category not foundcccc");
   }
 
   return true;

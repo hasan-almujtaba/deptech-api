@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { body, validationResult } from "express-validator";
+import { body, check, Meta, param, validationResult } from "express-validator";
 import { formatter } from "../helpers/validation";
 import { PrismaClient } from "@prisma/client";
 
@@ -8,7 +8,7 @@ const prisma = new PrismaClient({});
 const productExist = async (value: number) => {
   const product = await prisma.product.findUnique({
     where: {
-      id: value,
+      id: +value,
     },
   });
 
@@ -27,7 +27,19 @@ const categoryExist = async (value: number) => {
   });
 
   if (!category) {
-    return Promise.reject("Category not found");
+    return Promise.reject("Category not foundxxx");
+  }
+
+  return true;
+};
+
+const checkFile = function (value: any, { req }: Meta) {
+  if (!req.file) {
+    return Promise.reject("Please select an image");
+  }
+
+  if (req.file.mimetype.split("/")[0] !== "image") {
+    return Promise.reject("Invalid file type");
   }
 
   return true;
@@ -55,6 +67,7 @@ export const storeProductValidation = [
     .withMessage("Please enter stock")
     .isNumeric()
     .withMessage("Data must be a string"),
+  check("image").custom(checkFile),
   function (req: Request, res: Response, next: NextFunction) {
     var errors = validationResult(req).formatWith(formatter);
 
@@ -67,7 +80,7 @@ export const storeProductValidation = [
 ];
 
 export const updateProductValidation = [
-  body("id")
+  param("id")
     .notEmpty()
     .withMessage("Please enter id")
     .isNumeric()
@@ -92,6 +105,7 @@ export const updateProductValidation = [
     .withMessage("Please enter stock")
     .isNumeric()
     .withMessage("Data must be a string"),
+  check("image").optional().custom(checkFile),
   function (req: Request, res: Response, next: NextFunction) {
     var errors = validationResult(req).formatWith(formatter);
 
