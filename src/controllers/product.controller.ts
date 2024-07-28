@@ -122,6 +122,18 @@ export const destroy = async (req: Request, res: Response) => {
       where: { id: Number(id) },
     });
 
+    const oldFilePath = path.join(
+      process.cwd(),
+      "/public/uploads",
+      product?.image ?? ""
+    );
+
+    unlink(oldFilePath, (err) => {
+      if (err) {
+        console.error(`Error deleting file ${oldFilePath}:`, err);
+      }
+    });
+
     return res.status(200).json({ message: "Product deleted successfully" });
   } catch (error) {
     return res
