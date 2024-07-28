@@ -66,7 +66,7 @@ export const storeProductValidation = [
     .notEmpty()
     .withMessage("Please enter stock")
     .isNumeric()
-    .withMessage("Data must be a string"),
+    .withMessage("Data must be a numeric"),
   check("image").custom(checkFile),
   function (req: Request, res: Response, next: NextFunction) {
     var errors = validationResult(req).formatWith(formatter);
@@ -104,7 +104,7 @@ export const updateProductValidation = [
     .notEmpty()
     .withMessage("Please enter stock")
     .isNumeric()
-    .withMessage("Data must be a string"),
+    .withMessage("Data must be a numeric"),
   check("image").optional().custom(checkFile),
   function (req: Request, res: Response, next: NextFunction) {
     var errors = validationResult(req).formatWith(formatter);

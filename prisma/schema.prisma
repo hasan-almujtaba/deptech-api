@@ -35,6 +35,7 @@ model Product {
   name        String
   description String
   image       String?
+  stock       Int
   categoryId  Int
   Category    Category @relation(fields: [categoryId], references: [id])
 }

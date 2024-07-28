@@ -48,6 +48,7 @@ export const store = async (req: Request, res: Response) => {
         name: req.body.name,
         description: req.body.description,
         image: filename,
+        stock: +req.body.stock,
         Category: {
           connect: {
             id: Number(req.body.categoryId),
@@ -95,6 +96,7 @@ export const update = async (req: Request, res: Response) => {
         name: req.body.name,
         description: req.body.description,
         image: filename,
+        stock: +req.body.stock,
       },
     });
 
