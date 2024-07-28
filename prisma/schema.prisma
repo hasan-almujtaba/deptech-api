@@ -31,17 +31,20 @@ model Category {
 }
 
 model Product {
-  id          Int      @id @default(autoincrement())
-  name        String
-  description String
-  image       String?
-  stock       Int
-  categoryId  Int
-  Category    Category @relation(fields: [categoryId], references: [id])
+  id            Int          @id @default(autoincrement())
+  name          String
+  description   String
+  image         String?
+  stock         Int
+  categoryId    Int
+  Category      Category     @relation(fields: [categoryId], references: [id])
+  Transaction   Transaction? @relation(fields: [transactionId], references: [id])
+  transactionId Int?
 }
 
 model Transaction {
-  id    Int    @id @default(autoincrement())
-  type  String
-  stock Int
+  id       Int       @id @default(autoincrement())
+  type     String
+  amount   Int
+  products Product[]
 }

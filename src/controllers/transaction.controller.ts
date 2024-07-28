@@ -23,7 +23,7 @@ export const store = async (req: Request, res: Response) => {
   const transaction = await prisma.transaction.create({
     data: {
       type: req.body.type,
-      stock: +req.body.stock,
+      amount: +req.body.amount,
     },
   });
 
@@ -33,11 +33,11 @@ export const store = async (req: Request, res: Response) => {
 export const update = async (req: Request, res: Response) => {
   await prisma.transaction.update({
     where: {
-      id: Number(req.body.id),
+      id: +req.body.id,
     },
     data: {
       type: req.body.type,
-      stock: Number(req.body.stock),
+      amount: +req.body.amount,
     },
   });
 
