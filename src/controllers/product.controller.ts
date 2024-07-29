@@ -121,7 +121,7 @@ export const destroy = async (req: Request, res: Response) => {
 
     // If the product exists, proceed to delete it
     await prisma.product.delete({
-      where: { id: Number(id) },
+      where: { id: +id },
     });
 
     const oldFilePath = path.join(

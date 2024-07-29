@@ -31,20 +31,36 @@ model Category {
 }
 
 model Product {
-  id            Int          @id @default(autoincrement())
+  id            Int               @id @default(autoincrement())
   name          String
   description   String
   image         String?
   stock         Int
   categoryId    Int
-  Category      Category     @relation(fields: [categoryId], references: [id])
-  Transaction   Transaction? @relation(fields: [transactionId], references: [id])
+  Category      Category          @relation(fields: [categoryId], references: [id])
+  transactions  TransactionItem[]
+  Transaction   Transaction?      @relation(fields: [transactionId], references: [id])
   transactionId Int?
 }
 
 model Transaction {
-  id       Int       @id @default(autoincrement())
-  type     String
-  amount   Int
-  products Product[]
+  id        Int               @id @default(autoincrement())
+  type      String
+  createdAt DateTime          @default(now())
+  items     TransactionItem[]
+  Product   Product[]
+}
+
+model TransactionItem {
+  id            Int         @id @default(autoincrement())
+  productId     Int
+  transaction   Transaction @relation(fields: [transactionId], references: [id])
+  transactionId Int
+  quantity      Int
+  product       Product     @relation(fields: [productId], references: [id])
+}
+
+enum TransactionType {
+  STOCK_IN
+  STOCK_OUT
 }

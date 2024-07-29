@@ -42,8 +42,11 @@ const categoryExist = async (value: number) => {
 };
 
 export const updateCategoryValidation = [
-  body("id").notEmpty().withMessage("Please enter id").isNumeric(),
-  // .custom(categoryExist),
+  body("id")
+    .notEmpty()
+    .withMessage("Please enter id")
+    .isNumeric()
+    .custom(categoryExist),
   body("name")
     .notEmpty()
     .withMessage("Please enter name")
