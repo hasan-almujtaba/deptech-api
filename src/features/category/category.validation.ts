@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { body, param, validationResult } from "express-validator";
-import { formatter } from "@/helpers";
+import { formatter } from "@/utils";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient({});
