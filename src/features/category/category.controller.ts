@@ -1,5 +1,9 @@
 import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
+import {
+  TCategoryRequestBody,
+  TCategoryRequestParam,
+} from "@/features/category";
 
 const prisma = new PrismaClient({});
 
@@ -43,7 +47,10 @@ export const show = async (req: Request, res: Response): Promise<Response> => {
   }
 };
 
-export const store = async (req: Request, res: Response): Promise<Response> => {
+export const store = async (
+  req: Request<object, object, TCategoryRequestBody>,
+  res: Response
+): Promise<Response> => {
   try {
     const { name, description } = req.body;
 
@@ -61,11 +68,11 @@ export const store = async (req: Request, res: Response): Promise<Response> => {
 };
 
 export const update = async (
-  req: Request,
+  req: Request<object, object, TCategoryRequestBody>,
   res: Response
 ): Promise<Response> => {
   try {
-    const { id } = req.params;
+    const { id } = req.params as TCategoryRequestParam;
     const { name, description } = req.body;
 
     const category = await prisma.category.update({
@@ -85,18 +92,18 @@ export const update = async (
 };
 
 export const destroy = async (
-  req: Request,
+  req: Request<object>,
   res: Response
 ): Promise<Response> => {
   try {
-    const id = +req.params.id;
+    const { id } = req.params as TCategoryRequestParam;
     if (isNaN(id)) {
       return res.status(400).json({ message: "Invalid category ID" });
     }
 
     await prisma.category.delete({
       where: {
-        id,
+        id: +id,
       },
     });
 

@@ -1,16 +1,14 @@
 import express from "express";
-import { verify } from "../middlewares/jwt.middleware";
+import { verify } from "@/middlewares";
 import {
+  storeCategoryValidation,
+  updateCategoryValidation,
   destroy,
   index,
   show,
   store,
   update,
-} from "../controllers/category.controller";
-import {
-  storeCategoryValidation,
-  updateCategoryValidation,
-} from "../validations/category.validation";
+} from "@/features/category";
 const router = express.Router();
 
 router.get("/categories", verify, index);
@@ -19,4 +17,4 @@ router.post("/categories", verify, storeCategoryValidation, store);
 router.put("/categories/:id", verify, updateCategoryValidation, update);
 router.delete("/categories/:id", verify, destroy);
 
-export default router;
+export const categoryRouter = router;

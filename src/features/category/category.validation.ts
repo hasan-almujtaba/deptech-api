@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { body, param, validationResult } from "express-validator";
-import { formatter } from "../helpers/validation";
+import { formatter } from "@/helpers";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient({});
@@ -17,7 +17,7 @@ export const storeCategoryValidation = [
     .isString()
     .withMessage("Data must be a string"),
   function (req: Request, res: Response, next: NextFunction) {
-    var errors = validationResult(req).formatWith(formatter);
+    const errors = validationResult(req).formatWith(formatter);
 
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.mapped() });
@@ -58,7 +58,7 @@ export const updateCategoryValidation = [
     .isString()
     .withMessage("Data must be a string"),
   function (req: Request, res: Response, next: NextFunction) {
-    var errors = validationResult(req).formatWith(formatter);
+    const errors = validationResult(req).formatWith(formatter);
 
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.mapped() });

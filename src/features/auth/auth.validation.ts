@@ -54,7 +54,7 @@ export const registerValidation = [
     .isDate()
     .withMessage("Data must be a date"),
   function (req: Request, res: Response, next: NextFunction) {
-    var errors = validationResult(req).formatWith(formatter);
+    const errors = validationResult(req).formatWith(formatter);
 
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.mapped() });
@@ -94,7 +94,7 @@ export const loginValidation = [
     .withMessage("Data must be a string")
     .custom(passwordValid),
   function (req: Request, res: Response, next: NextFunction) {
-    var errors = validationResult(req).formatWith(formatter);
+    const errors = validationResult(req).formatWith(formatter);
 
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.mapped() });
@@ -132,7 +132,7 @@ export const updateProfileValidation = [
     .isDate()
     .withMessage("Data must be a date"),
   function (req: Request, res: Response, next: NextFunction) {
-    var errors = validationResult(req).formatWith(formatter);
+    const errors = validationResult(req).formatWith(formatter);
 
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.mapped() });

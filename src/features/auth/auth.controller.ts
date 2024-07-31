@@ -12,7 +12,7 @@ import {
 const prisma = new PrismaClient({});
 
 export const register = async (
-  req: Request<{}, {}, TRegisterRequestBody>,
+  req: Request<object, object, TRegisterRequestBody>,
   res: Response
 ) => {
   try {
@@ -46,7 +46,7 @@ export const register = async (
 };
 
 export const login = async (
-  req: Request<{}, {}, TLoginRequestBody>,
+  req: Request<object, object, TLoginRequestBody>,
   res: Response
 ) => {
   try {
@@ -76,7 +76,7 @@ export const login = async (
 };
 
 export const updateProfile = async (
-  req: Request<{}, {}, TUpdateProfileRequestBody>,
+  req: Request<object, object, TUpdateProfileRequestBody>,
   res: Response
 ) => {
   const { dateOfBirth, email, firstName, gender, id, lastName } = req.body;
