@@ -65,17 +65,12 @@ export const update = async (
   res: Response
 ): Promise<Response> => {
   try {
-    const { id, name, description } = req.body;
-
-    if (!id || !name || !description) {
-      return res
-        .status(400)
-        .json({ message: "ID, name, and description are required" });
-    }
+    const { id } = req.params;
+    const { name, description } = req.body;
 
     const category = await prisma.category.update({
       where: {
-        id: Number(id),
+        id: +id,
       },
       data: {
         name,
@@ -94,7 +89,7 @@ export const destroy = async (
   res: Response
 ): Promise<Response> => {
   try {
-    const id = Number(req.params.id);
+    const id = +req.params.id;
     if (isNaN(id)) {
       return res.status(400).json({ message: "Invalid category ID" });
     }

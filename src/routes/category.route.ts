@@ -16,7 +16,7 @@ const router = express.Router();
 router.get("/categories", verify, index);
 router.get("/categories/:id", verify, show);
 router.post("/categories", verify, storeCategoryValidation, store);
-router.put("/categories", verify, updateCategoryValidation, update);
+router.put("/categories/:id", verify, updateCategoryValidation, update);
 router.delete("/categories/:id", verify, destroy);
 
 export default router;

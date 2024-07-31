@@ -6,7 +6,13 @@ const prisma = new PrismaClient({});
 export const index = async (req: Request, res: Response) => {
   try {
     const transaction = await prisma.transaction.findMany({
-      include: { products: true, items: true },
+      include: {
+        items: {
+          include: {
+            product: true,
+          },
+        },
+      },
     });
 
     res.json({ message: "Success", data: transaction });
@@ -72,8 +78,8 @@ export const store = async (req: Request, res: Response) => {
         type,
         items: {
           create: transactionItems.map((item) => ({
-            productId: item.productId,
-            quantity: item.quantity,
+            productId: +item.productId,
+            quantity: +item.quantity,
           })),
         },
       },
@@ -84,42 +90,5 @@ export const store = async (req: Request, res: Response) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });
-  }
-};
-
-export const update = async (req: Request, res: Response) => {
-  await prisma.transaction.update({
-    where: {
-      id: +req.body.id,
-    },
-    data: {
-      type: req.body.type,
-    },
-  });
-
-  res.json({ message: "Success" });
-};
-
-export const destroy = async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-
-    const product = await prisma.transaction.findUnique({
-      where: { id: Number(id) },
-    });
-
-    if (!product) {
-      return res.status(404).json({ error: "Product not found" });
-    }
-
-    await prisma.transaction.delete({
-      where: { id: Number(id) },
-    });
-
-    return res.status(200).json({ message: "Success" });
-  } catch (error) {
-    return res
-      .status(500)
-      .json({ error: "An error occurred while deleting the product" });
   }
 };

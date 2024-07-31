@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { body, validationResult } from "express-validator";
+import { body, param, validationResult } from "express-validator";
 import { formatter } from "../helpers/validation";
 import { PrismaClient } from "@prisma/client";
 
@@ -30,7 +30,7 @@ export const storeCategoryValidation = [
 const categoryExist = async (value: number) => {
   const category = await prisma.category.findUnique({
     where: {
-      id: value,
+      id: +value,
     },
   });
 
@@ -42,7 +42,7 @@ const categoryExist = async (value: number) => {
 };
 
 export const updateCategoryValidation = [
-  body("id")
+  param("id")
     .notEmpty()
     .withMessage("Please enter id")
     .isNumeric()

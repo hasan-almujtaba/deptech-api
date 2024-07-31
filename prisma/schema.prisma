@@ -37,7 +37,7 @@ model Product {
   image         String?
   stock         Int
   categoryId    Int
-  Category      Category          @relation(fields: [categoryId], references: [id])
+  Category      Category          @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   transactions  TransactionItem[]
   Transaction   Transaction?      @relation(fields: [transactionId], references: [id])
   transactionId Int?

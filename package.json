@@ -5,7 +5,7 @@
   "scripts": {
     "build": "npx tsc",
     "start": "node dist/app.js",
-    "dev": "nodemon src/app.ts"
+    "dev": "nodemon -e ts,js --exec ts-node -r tsconfig-paths/register src/app.ts"
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"
@@ -25,7 +25,8 @@
     "jsonwebtoken": "^9.0.2",
     "morgan": "~1.9.1",
     "multer": "1.4.5-lts.1",
-    "nodemon": "^3.1.4"
+    "nodemon": "^3.1.4",
+    "tsconfig-paths": "^4.2.0"
   },
   "devDependencies": {
     "@types/express": "^4.17.21",
