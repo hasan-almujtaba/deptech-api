@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
-import { hash } from "@/helpers";
+import { hash } from "@/utils";
 import { generate } from "@/middlewares";
 import { RequestWithUser } from "@/types";
 import {
