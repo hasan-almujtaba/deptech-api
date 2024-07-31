@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { body, validationResult } from "express-validator";
-import { formatter } from "../helpers/validation";
+import { formatter } from "@/helpers";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient({});
@@ -13,7 +13,7 @@ const productExist = async (value: number) => {
   });
 
   if (!product) {
-    return Promise.reject("Product not found");
+    return Promise.reject(`Product with ID ${value} not found`);
   }
 
   return true;
@@ -29,33 +29,14 @@ export const storeTransactionValidation = [
     .isArray({ min: 1 })
     .withMessage("Items must be an array with at least one item"),
   body("items.*.productId")
-    .isInt({ gt: 0 })
+    .isInt()
     .withMessage("Product ID must be a positive integer")
-    .custom(async (productId) => {
-      const product = await prisma.product.findUnique({
-        where: { id: productId },
-      });
-      if (!product) {
-        throw new Error(`Product with ID ${productId} does not exist`);
-      }
-      return true;
-    }),
+    .custom(productExist),
   body("items.*.quantity")
-    .isInt({ gt: 0 })
+    .isInt()
     .withMessage("Quantity must be a positive integer"),
-  // .isIn(["out", "in"])
-  // .withMessage("Data must between out and in"),
-  // body("amount")
-  //   .notEmpty()
-  //   .withMessage("Please enter amount")
-  //   .isNumeric()
-  //   .withMessage("Data must be a number"),
-  // body("productId")
-  //   .notEmpty()
-  //   .withMessage("Please select product")
-  //   .custom(productExist),
   function (req: Request, res: Response, next: NextFunction) {
-    var errors = validationResult(req).formatWith(formatter);
+    const errors = validationResult(req).formatWith(formatter);
 
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.mapped() });

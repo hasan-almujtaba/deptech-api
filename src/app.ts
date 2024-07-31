@@ -2,7 +2,7 @@ import express, { Express } from "express";
 import dotenv from "dotenv";
 import notFound from "./middlewares/404.middleware";
 import indexRouter from "./routes";
-import transactionRouter from "./routes/transaction.route";
+import transactionRouter from "./features/transaction/transaction.route";
 import cors from "cors";
 import { authRouter } from "@/features/auth";
 import { categoryRouter } from "@/features/category";

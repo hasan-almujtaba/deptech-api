@@ -1,7 +1,7 @@
 import express from "express";
-import { verify } from "../middlewares/jwt.middleware";
-import { index, store, show } from "../controllers/transaction.controller";
-import { storeTransactionValidation } from "../validations/transaction.validation";
+import { verify } from "@/middlewares";
+import { index, store, show } from "@/features/transaction";
+import { storeTransactionValidation } from "@/features/transaction";
 const router = express.Router();
 
 router.get("/transactions", verify, index);

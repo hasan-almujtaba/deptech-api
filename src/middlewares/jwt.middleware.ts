@@ -1,5 +1,5 @@
 import jwt, { SignOptions } from "jsonwebtoken";
-import { Request, Response, NextFunction } from "express";
+import { Response, NextFunction } from "express";
 import * as dotenv from "dotenv";
 import { RequestWithUser } from "../types/request";
 
@@ -27,7 +27,7 @@ export const verify = (
         return res.status(403).json({ message: "Forbidden" });
       }
 
-      req.user = user as any;
+      req.user = user as never;
 
       next();
     });
