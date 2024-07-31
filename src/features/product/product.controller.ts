@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
-import multer from "multer";
 import { unlink } from "fs";
 import path from "path";
+import { TProductRequestBody, TProductRequestParam } from "@/features/product";
 
 const prisma = new PrismaClient({});
 
@@ -36,22 +36,28 @@ export const show = async (req: Request, res: Response) => {
     }
 
     res.json({ message: "Success", data: product });
-  } catch (error) {}
+  } catch (error) {
+    return res.status(500).json({ message: "Error retrieving product", error });
+  }
 };
 
-export const store = async (req: Request, res: Response) => {
+export const store = async (
+  req: Request<object, object, TProductRequestBody>,
+  res: Response
+) => {
   try {
     const filename = req.file?.filename;
+    const { name, description, stock, categoryId } = req.body;
 
     const product = await prisma.product.create({
       data: {
-        name: req.body.name,
-        description: req.body.description,
+        name: name,
+        description: description,
         image: filename,
-        stock: +req.body.stock,
+        stock: +stock,
         Category: {
           connect: {
-            id: Number(req.body.categoryId),
+            id: +categoryId,
           },
         },
       },
@@ -63,11 +69,17 @@ export const store = async (req: Request, res: Response) => {
   }
 };
 
-export const update = async (req: Request, res: Response) => {
+export const update = async (
+  req: Request<object, object, TProductRequestBody>,
+  res: Response
+) => {
   try {
+    const { id } = req.params as TProductRequestParam;
+    const { name, description, stock } = req.body;
+
     const product = await prisma.product.findUnique({
       where: {
-        id: +req.params.id,
+        id: +id,
       },
     });
 
@@ -90,13 +102,13 @@ export const update = async (req: Request, res: Response) => {
 
     await prisma.product.update({
       where: {
-        id: +req.params.id,
+        id: +id,
       },
       data: {
-        name: req.body.name,
-        description: req.body.description,
+        name: name,
+        description: description,
         image: filename,
-        stock: +req.body.stock,
+        stock: +stock,
       },
     });
 
@@ -106,13 +118,13 @@ export const update = async (req: Request, res: Response) => {
   }
 };
 
-export const destroy = async (req: Request, res: Response) => {
+export const destroy = async (req: Request<object>, res: Response) => {
   try {
-    const { id } = req.params;
+    const { id } = req.params as TProductRequestParam;
 
     // Check if the product exists
     const product = await prisma.product.findUnique({
-      where: { id: Number(id) },
+      where: { id: +id },
     });
 
     if (!product) {

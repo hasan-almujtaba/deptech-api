@@ -36,7 +36,7 @@ export const show = async (req: Request, res: Response): Promise<Response> => {
     });
 
     if (!category) {
-      return res.status(404).json({ message: "Category not foundaaaa" });
+      return res.status(404).json({ message: "Category not found" });
     }
 
     return res.json({ message: "Success", data: category });

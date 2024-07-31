@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { body, check, Meta, param, validationResult } from "express-validator";
-import { formatter } from "../helpers/validation";
+import { formatter } from "@/helpers";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient({});
@@ -33,7 +33,7 @@ const categoryExist = async (value: number) => {
   return true;
 };
 
-const checkFile = function (value: any, { req }: Meta) {
+const checkFile = function (value: File, { req }: Meta) {
   if (!req.file) {
     return Promise.reject("Please select an image");
   }
@@ -69,7 +69,7 @@ export const storeProductValidation = [
     .withMessage("Data must be a numeric"),
   check("image").custom(checkFile),
   function (req: Request, res: Response, next: NextFunction) {
-    var errors = validationResult(req).formatWith(formatter);
+    const errors = validationResult(req).formatWith(formatter);
 
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.mapped() });
@@ -107,7 +107,7 @@ export const updateProductValidation = [
     .withMessage("Data must be a numeric"),
   check("image").optional().custom(checkFile),
   function (req: Request, res: Response, next: NextFunction) {
-    var errors = validationResult(req).formatWith(formatter);
+    const errors = validationResult(req).formatWith(formatter);
 
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.mapped() });

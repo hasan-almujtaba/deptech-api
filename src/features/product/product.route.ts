@@ -1,16 +1,14 @@
 import express from "express";
-import { verify } from "../middlewares/jwt.middleware";
+import { verify } from "@/middlewares";
 import {
   destroy,
   index,
   show,
   store,
   update,
-} from "../controllers/product.controller";
-import {
   storeProductValidation,
   updateProductValidation,
-} from "../validations/product.validation";
+} from "@/features/product";
 import multer from "multer";
 
 const router = express.Router();
@@ -44,4 +42,4 @@ router.put(
 );
 router.delete("/products/:id", verify, destroy);
 
-export default router;
+export const productRouter = router;
